@@ -32,6 +32,9 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Book Search</h1>
+      <div className="flex">
+        <a href="/login" className="text-blue-500 text-xl ml-auto mb-8">Login</a>
+      </div>
       
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex gap-2">
