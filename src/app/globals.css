@@ -25,7 +25,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.login-link, .logout-link {
+.login-link,
+.logout-link {
     position: absolute;
     top: 0;
     right: 50px;
@@ -38,6 +39,24 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
-.login-link:hover, .logout-link:hover {
+.login-link:hover,
+.logout-link:hover {
+    background-color: #2e6da4;
+}
+
+.about-link {
+    position: absolute;
+    top: 0;
+    right: 150px;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #337ab7;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.about-link:hover {
     background-color: #2e6da4;
 }

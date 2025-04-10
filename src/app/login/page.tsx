@@ -27,9 +27,9 @@ export default function Login() {
       });
 
       if (response.ok) {
-        const oneWeek = 60 * 60 * 24 * 7;
+        const sevenDays = 60 * 60 * 24 * 7;
         setCookie("authToken", `Basic ${token}`, {
-          maxAge: oneWeek,
+          maxAge: sevenDays,
           secure: true,
           sameSite: "strict",
         });
@@ -110,11 +110,14 @@ export default function Login() {
               {isLoading ? "Signing in..." : "Sign in"}
             </button>
           </div>
-          
+
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-blue-600 hover:text-blue-800">
+              <Link
+                href="/register"
+                className="text-blue-600 hover:text-blue-800"
+              >
                 Register here
               </Link>
             </p>

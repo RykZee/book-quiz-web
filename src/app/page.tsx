@@ -33,16 +33,6 @@ export default function Home() {
         `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
         { method: "GET" },
       );
-      // const response = await fetch(
-      //   `http://localhost:8080/book/search?query=${encodeURIComponent(searchQuery)}`,
-      //   {
-      //     headers: {
-      //       Authorization: authToken,
-      //       "Content-Type": "application-json",
-      //     },
-      //     method: "GET",
-      //   },
-      // );
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Server error:", response.status, errorText);
@@ -62,6 +52,9 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Book Search</h1>
       <div className="flex">
+        <Link href="/about" className="about-link">
+          About
+        </Link>
         {isAuthenticated ? (
           <button
             onClick={() => {

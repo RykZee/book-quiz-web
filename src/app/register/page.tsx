@@ -18,7 +18,6 @@ export default function Register() {
     setError("");
 
     try {
-      // Make registration request
       const response = await fetch("http://localhost:8080/auth/register", {
         method: "POST",
         headers: {
@@ -38,11 +37,8 @@ export default function Register() {
           secure: true,
           sameSite: "strict",
         });
-
-        // Redirect to main page
         router.push("/");
       } else {
-        // Handle registration failure
         const data = await response.json().catch(() => null);
         setError(data?.message || "Registration failed. Please try again.");
       }
