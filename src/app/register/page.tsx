@@ -4,6 +4,7 @@ import { useState } from "react";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { H1, Text } from "../components/typography";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -54,13 +55,13 @@ export default function Register() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-3xl font-bold">Register</h1>
-          <p className="mt-2 text-gray-600">Create a new account</p>
+          <H1>Register</H1>
+          <Text size="regular" muted={true}>Create a new account</Text>
         </div>
 
         {error && (
-          <div className="p-4 text-sm text-red-800 bg-red-100 rounded-lg">
-            {error}
+          <div className="p-4 rounded-lg bg-red-100">
+            <Text size="small" error={true}>{error}</Text>
           </div>
         )}
 
