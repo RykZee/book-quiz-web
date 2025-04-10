@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getCookie, deleteCookie } from "cookies-next";
+import Link from "next/link";
 
 interface SearchResult {
   cover_i: number;
@@ -23,7 +24,6 @@ export default function Home() {
       setIsAuthenticated(true);
     } else {
       // Redirect to login if not authenticated
-      window.location.href = "/login";
     }
   }, []);
 
@@ -36,7 +36,6 @@ export default function Home() {
 
       if (!authToken) {
         // Redirect to login if no auth token
-        window.location.href = "/login";
         return;
       }
 
@@ -73,16 +72,20 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Book Search</h1>
       <div className="flex">
-        {isAuthenticated && (
+        {isAuthenticated ? (
           <button
             onClick={() => {
               deleteCookie("authToken");
-              window.location.href = "/login";
+              window.location.href = "/";
             }}
             className="logout-link"
           >
             Logout
           </button>
+        ) : (
+          <Link href="/login" className="login-link">
+            Sign in
+          </Link>
         )}
       </div>
 
