@@ -49,8 +49,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Book Search</h1>
+    <div className="container mx-auto px-4 py-4">
       <div className="flex">
         <Link href="/about" className="about-link">
           About
