@@ -62,8 +62,6 @@ body {
 }
 
 /* Typography System */
-
-/* Headings */
 .heading-1 {
     font-size: 2.5rem;
     line-height: 1.2;
@@ -96,7 +94,6 @@ body {
     color: var(--foreground);
 }
 
-/* Body text styles */
 .text-regular {
     font-family: "Inter", Arial, Helvetica, sans-serif;
     font-size: 1rem;
@@ -115,7 +112,6 @@ body {
     line-height: 1.7;
 }
 
-/* Font weights */
 .font-light {
     font-weight: 300;
 }
@@ -136,7 +132,6 @@ body {
     font-weight: 700;
 }
 
-/* Text alignments */
 .text-center {
     text-align: center;
 }
@@ -149,7 +144,6 @@ body {
     text-align: left;
 }
 
-/* Link styles */
 .text-link {
     color: #337ab7;
     text-decoration: none;
@@ -161,22 +155,18 @@ body {
     text-decoration: underline;
 }
 
-/* Paragraph spacing */
 p:not(:last-child) {
     margin-bottom: 1rem;
 }
 
-/* Muted text */
 .text-muted {
     color: #6c757d;
 }
 
-/* Error text */
 .text-error {
     color: #dc3545;
 }
 
-/* Success text */
 .text-success {
     color: #28a745;
 }
