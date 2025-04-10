@@ -1,29 +1,69 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+import { getCookie, deleteCookie } from "cookies-next";
 
 interface SearchResult {
-  cover_i: number,
-  title: string,
-  first_publish_year: number,
-  author_name: [string]
+  cover_i: number;
+  title: string;
+  first_publish_year: number;
+  author_name: [string];
 }
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const authToken = getCookie("authToken");
+    if (authToken) {
+      setIsAuthenticated(true);
+    } else {
+      // Redirect to login if not authenticated
+      window.location.href = "/login";
+    }
+  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
-      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`, {method: 'GET'});
+      const authToken = getCookie("authToken");
+
+      if (!authToken) {
+        // Redirect to login if no auth token
+        window.location.href = "/login";
+        return;
+      }
+
+      const response = await fetch(
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
+        { method: "GET" },
+      );
+      // const response = await fetch(
+      //   `http://localhost:8080/book/search?query=${encodeURIComponent(searchQuery)}`,
+      //   {
+      //     headers: {
+      //       Authorization: authToken,
+      //       "Content-Type": "application-json",
+      //     },
+      //     method: "GET",
+      //   },
+      // );
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server error:", response.status, errorText);
+        setResults([]);
+        return;
+      }
       const data = await response.json();
-      setResults(data.docs);
+      setResults(data.docs ?? []);
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
     } finally {
       setIsLoading(false);
     }
@@ -33,9 +73,19 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Book Search</h1>
       <div className="flex">
-        <a href="/login" className="text-blue-500 text-xl ml-auto mb-8">Login</a>
+        {isAuthenticated && (
+          <button
+            onClick={() => {
+              deleteCookie("authToken");
+              window.location.href = "/login";
+            }}
+            className="logout-link"
+          >
+            Logout
+          </button>
+        )}
       </div>
-      
+
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex gap-2">
           <input
@@ -50,7 +100,7 @@ export default function Home() {
             disabled={isLoading}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
           >
-            {isLoading ? 'Searching...' : 'Search'}
+            {isLoading ? "Searching..." : "Search"}
           </button>
         </div>
       </form>
@@ -60,7 +110,10 @@ export default function Home() {
           {results.map((result) => (
             <div key={result.cover_i} className="p-4 border rounded-lg">
               <h2 className="text-xl font-semibold">{result.title}</h2>
-              <p><b>Author:</b> {result.author_name[0]} <b>Published:</b> {result.first_publish_year}</p>
+              <p>
+                <b>Author:</b> {result.author_name[0]} <b>Published:</b>{" "}
+                {result.first_publish_year}
+              </p>
             </div>
           ))}
         </div>
