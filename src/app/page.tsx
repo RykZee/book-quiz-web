@@ -18,12 +18,9 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated
     const authToken = getCookie("authToken");
     if (authToken) {
       setIsAuthenticated(true);
-    } else {
-      // Redirect to login if not authenticated
     }
   }, []);
 
@@ -32,13 +29,6 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const authToken = getCookie("authToken");
-
-      if (!authToken) {
-        // Redirect to login if no auth token
-        return;
-      }
-
       const response = await fetch(
         `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
         { method: "GET" },
