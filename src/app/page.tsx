@@ -92,7 +92,7 @@ export default function Home() {
 
       {results.length > 0 && (
         <div className="space-y-4">
-          {results.map((result) => (
+          {results.map((result: SearchResult) => (
             <div key={result.cover_i} className="p-4 border rounded-lg">
               <h2 className="text-xl font-semibold">{result.title}</h2>
               <p>
