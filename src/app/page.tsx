@@ -110,27 +110,35 @@ export default function Home() {
                 result.volumeInfo.title && Array.isArray(result.volumeInfo.authors)
             )
             .map((result: SearchResult) => (
-              <div key={result.id} className="p-4 border rounded-lg">
+              <div
+                key={result.id}
+                className="p-4 border rounded-lg flex flex-col justify-between h-full"
+              >
                 <Link href={`/book/${result.id}`}>
                   <h2 className="text-xl font-semibold hover:text-blue-600">
                     {result.volumeInfo.title}
                   </h2>
                 </Link>
-                <div className="flex justify-between items-start gap-4">
+                <div className="flex justify-between items-start gap-4 my-4 flex-1">
                   <div className="flex-1">
                     <p>{result.volumeInfo.description}</p>
-                    <b>Author:</b> {result.volumeInfo.authors[0] ?? "Unknown"} <b>Published:</b>{" "}
-                    {result.volumeInfo.publishedDate}
                   </div>
+                  {result.volumeInfo.imageLinks?.thumbnail && (
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={result.volumeInfo.imageLinks.thumbnail}
+                        alt={`Cover of ${result.volumeInfo.title}`}
+                        width={128}
+                        height={192}
+                        className="object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
-                {result.volumeInfo.imageLinks?.thumbnail && (
-                  <Image
-                    src={result.volumeInfo.imageLinks.thumbnail}
-                    alt={`Cover of result.volumeInfo.title`}
-                    width={128}
-                    height={192}
-                  />
-                )}
+                <div>
+                  <b>Author:</b> {result.volumeInfo.authors[0] ?? "Unknown"} <b>Published:</b>{" "}
+                  {result.volumeInfo.publishedDate}
+                </div>
               </div>
             ))}
         </div>
