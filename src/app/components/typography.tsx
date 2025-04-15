@@ -63,12 +63,7 @@ interface LinkProps extends TypographyProps {
   external?: boolean;
 }
 
-export function TextLink({
-  children,
-  className = "",
-  href,
-  external = false,
-}: LinkProps) {
+export function TextLink({ children, className = "", href, external = false }: LinkProps) {
   return (
     <a
       href={href}

@@ -56,22 +56,23 @@ export default function Register() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <H1>Register</H1>
-          <Text size="regular" muted={true}>Create a new account</Text>
+          <Text size="regular" muted={true}>
+            Create a new account
+          </Text>
         </div>
 
         {error && (
           <div className="p-4 rounded-lg bg-red-100">
-            <Text size="small" error={true}>{error}</Text>
+            <Text size="small" error={true}>
+              {error}
+            </Text>
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                 Username
               </label>
               <input
@@ -86,10 +87,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <input

@@ -3,13 +3,22 @@
 import { useState, useEffect } from "react";
 import { getCookie, deleteCookie } from "cookies-next";
 import Link from "next/link";
-
+// import { Text } from "./components/typography";
 interface SearchResult {
-  cover_i: number;
-  title: string;
-  first_publish_year: number;
-  author_name: [string];
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors: [string];
+    description: string;
+    publishedDate: string;
+  };
 }
+// interface SearchResult {
+// 	cover_i: number;
+// 	title: string;
+// 	first_publish_year: number;
+// 	author_name: [string];
+// }
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,9 +39,14 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
-        { method: "GET" },
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}`,
+        { method: "GET" }
       );
+
+      // const response = await fetch(
+      //   `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
+      //   { method: "GET" },
+      // );
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Server error:", response.status, errorText);
@@ -40,7 +54,7 @@ export default function Home() {
         return;
       }
       const data = await response.json();
-      setResults(data.docs ?? []);
+      setResults(data.items ?? []);
     } catch (error) {
       console.error("Search failed:", error);
     } finally {
@@ -92,15 +106,21 @@ export default function Home() {
 
       {results.length > 0 && (
         <div className="space-y-4">
-          {results.map((result: SearchResult) => (
-            <div key={result.cover_i} className="p-4 border rounded-lg">
-              <h2 className="text-xl font-semibold">{result.title}</h2>
-              <p>
-                <b>Author:</b> {result.author_name[0]} <b>Published:</b>{" "}
-                {result.first_publish_year}
-              </p>
-            </div>
-          ))}
+          {results
+            .filter(
+              (result: SearchResult) =>
+                result.volumeInfo.title && Array.isArray(result.volumeInfo.authors)
+            )
+            .map((result: SearchResult) => (
+              <div key={result.id} className="p-4 border rounded-lg">
+                <h2 className="text-xl font-semibold">{result.volumeInfo.title}</h2>
+                <p>
+                  <p>{result.volumeInfo.description}</p>
+                  <b>Author:</b> {result.volumeInfo.authors[0] ?? "Unknown"} <b>Published:</b>{" "}
+                  {result.volumeInfo.publishedDate}
+                </p>
+              </div>
+            ))}
         </div>
       )}
     </div>
