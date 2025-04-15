@@ -9,17 +9,23 @@ type Book = {
     description: string;
     imageLinks: {
       large: string;
-    },
+      thumbnail: string;
+    };
     publishedDate: string;
     title: string;
-  }
+  };
 };
+
+type Params = Promise<{ "book-id": string }>;
 
 async function getBookById(id: string): Promise<Book> {
   try {
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`, {
-      cache: "no-store",
-    });
+    const response = await fetch(
+      `https://www.googleapis.com/books/v1/volumes/${encodeURIComponent(id)}`,
+      {
+        cache: "no-store",
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch book: ${response.status}`);
@@ -32,13 +38,13 @@ async function getBookById(id: string): Promise<Book> {
   }
 }
 
-export default async function Book({ params }: { params: { "book-id": string } }) {
-  const bookId = params["book-id"];
+export default async function Book({ params }: { params: Params }) {
+  const { "book-id": bookId } = await params;
   let book: Book;
 
   try {
     book = await getBookById(bookId);
-  } catch (error) {
+  } catch {
     throw new Error(`Failed to load book with ID: ${bookId}`);
   }
 
@@ -52,7 +58,7 @@ export default async function Book({ params }: { params: { "book-id": string } }
         <div className="md:col-span-1">
           <div className="relative aspect-[2/3] w-full shadow-md rounded overflow-hidden">
             <Image
-              src={book.volumeInfo.imageLinks.large}
+              src={book.volumeInfo.imageLinks.large ?? book.volumeInfo.imageLinks.thumbnail}
               alt={`Cover of ${book.volumeInfo.title}`}
               fill
               className="object-cover"
@@ -71,8 +77,10 @@ export default async function Book({ params }: { params: { "book-id": string } }
 
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }} />
-            {/* <p className="text-gray-700">{book.volumeInfo.description}</p> */}
+            <div
+              className="text-gray-700"
+              dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}
+            />
           </div>
         </div>
       </div>
