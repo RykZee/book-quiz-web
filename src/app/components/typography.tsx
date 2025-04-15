@@ -8,7 +8,7 @@ interface TypographyProps {
 }
 
 export function H1({ children, className = "" }: TypographyProps) {
-  return <h1 className={`heading-1 px-8 ${className}`}>{children}</h1>;
+  return <h1 className={`heading-1 ${className}`}>{children}</h1>;
 }
 
 export function H2({ children, className = "" }: TypographyProps) {

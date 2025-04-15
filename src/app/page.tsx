@@ -3,22 +3,20 @@
 import { useState, useEffect } from "react";
 import { getCookie, deleteCookie } from "cookies-next";
 import Link from "next/link";
-// import { Text } from "./components/typography";
+import Image from "next/image";
+
 interface SearchResult {
   id: string;
   volumeInfo: {
-    title: string;
     authors: [string];
     description: string;
+    imageLinks: {
+      thumbnail: string;
+    };
     publishedDate: string;
+    title: string;
   };
 }
-// interface SearchResult {
-// 	cover_i: number;
-// 	title: string;
-// 	first_publish_year: number;
-// 	author_name: [string];
-// }
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -112,13 +110,35 @@ export default function Home() {
                 result.volumeInfo.title && Array.isArray(result.volumeInfo.authors)
             )
             .map((result: SearchResult) => (
-              <div key={result.id} className="p-4 border rounded-lg">
-                <h2 className="text-xl font-semibold">{result.volumeInfo.title}</h2>
-                <p>
-                  <p>{result.volumeInfo.description}</p>
+              <div
+                key={result.id}
+                className="p-4 border rounded-lg flex flex-col justify-between h-full"
+              >
+                <Link href={`/book/${result.id}`}>
+                  <h2 className="text-xl font-semibold hover:text-blue-600">
+                    {result.volumeInfo.title}
+                  </h2>
+                </Link>
+                <div className="flex justify-between items-start gap-4 my-4 flex-1">
+                  <div className="flex-1">
+                    <p>{result.volumeInfo.description}</p>
+                  </div>
+                  {result.volumeInfo.imageLinks?.thumbnail && (
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={result.volumeInfo.imageLinks.thumbnail}
+                        alt={`Cover of ${result.volumeInfo.title}`}
+                        width={128}
+                        height={192}
+                        className="object-contain"
+                      />
+                    </div>
+                  )}
+                </div>
+                <div>
                   <b>Author:</b> {result.volumeInfo.authors[0] ?? "Unknown"} <b>Published:</b>{" "}
                   {result.volumeInfo.publishedDate}
-                </p>
+                </div>
               </div>
             ))}
         </div>
