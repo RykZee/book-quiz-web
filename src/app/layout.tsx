@@ -25,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Link
           href="/"
           className="text-3xl font-bold px-16 py-8 mt-6 inline-block rounded-lg hover:text-blue-600 transition-colors duration-300 font-serif tracking-wide"

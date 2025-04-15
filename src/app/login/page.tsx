@@ -52,22 +52,23 @@ export default function Login() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <H1>Login</H1>
-          <Text size="regular" muted={true}>Enter your credentials to continue</Text>
+          <Text size="regular" muted={true}>
+            Enter your credentials to continue
+          </Text>
         </div>
 
         {error && (
           <div className="p-4 rounded-lg bg-red-100">
-            <Text size="small" error={true}>{error}</Text>
+            <Text size="small" error={true}>
+              {error}
+            </Text>
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                 Username
               </label>
               <input
@@ -82,10 +83,7 @@ export default function Login() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <input
@@ -113,10 +111,7 @@ export default function Login() {
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="text-blue-600 hover:text-blue-800"
-              >
+              <Link href="/register" className="text-blue-600 hover:text-blue-800">
                 Register here
               </Link>
             </p>
