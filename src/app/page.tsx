@@ -41,10 +41,6 @@ export default function Home() {
         { method: "GET" }
       );
 
-      // const response = await fetch(
-      //   `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=10`,
-      //   { method: "GET" },
-      // );
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Server error:", response.status, errorText);
