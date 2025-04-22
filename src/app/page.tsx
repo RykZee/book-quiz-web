@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getCookie, deleteCookie } from "cookies-next";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -22,14 +21,6 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const authToken = getCookie("authToken");
-    if (authToken) {
-      setIsAuthenticated(true);
-    }
-  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,27 +49,6 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-4">
-      <div className="flex">
-        <Link href="/about" className="about-link">
-          About
-        </Link>
-        {isAuthenticated ? (
-          <button
-            onClick={() => {
-              deleteCookie("authToken");
-              window.location.href = "/";
-            }}
-            className="logout-link"
-          >
-            Logout
-          </button>
-        ) : (
-          <Link href="/login" className="login-link">
-            Sign in
-          </Link>
-        )}
-      </div>
-
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex gap-2">
           <input

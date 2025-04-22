@@ -58,7 +58,12 @@ export default async function Book({ params }: { params: Params }) {
         <div className="md:col-span-1">
           <div className="relative aspect-[2/3] w-full shadow-md rounded overflow-hidden">
             <Image
-              src={book.volumeInfo.imageLinks.large ?? book.volumeInfo.imageLinks.thumbnail}
+              src={
+                book.volumeInfo.imageLinks?.large ??
+                book.volumeInfo.imageLinks?.thumbnail ??
+                "/placeholder-book.png"
+                // "http://books.google.com/books/content?id=qzcQCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+              }
               alt={`Cover of ${book.volumeInfo.title}`}
               fill
               className="object-cover"
@@ -79,7 +84,9 @@ export default async function Book({ params }: { params: Params }) {
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <div
               className="text-gray-700"
-              dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }}
+              dangerouslySetInnerHTML={{
+                __html: book.volumeInfo.description ?? "No description is available",
+              }}
             />
           </div>
         </div>

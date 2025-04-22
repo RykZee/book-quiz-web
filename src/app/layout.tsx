@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Link
-          href="/"
-          className="text-3xl font-bold px-16 py-8 mt-6 inline-block rounded-lg hover:text-blue-600 transition-colors duration-300 font-serif tracking-wide"
-        >
-          BookQuizard
-        </Link>
-        {children}
+        <Navbar />
+        <main className="pt-6">
+          {children}
+        </main>
       </body>
     </html>
   );

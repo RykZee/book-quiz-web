@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { setCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { H1, Text } from "../components/typography";
 
@@ -11,7 +10,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +33,7 @@ export default function Login() {
           sameSite: "strict",
         });
 
-        router.push("/");
+        window.location.href = "/";
       } else {
         setError("Authentication failed. Please check your credentials.");
       }
