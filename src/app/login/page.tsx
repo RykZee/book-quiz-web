@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       const token = btoa(`${username}:${password}`);
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://localhost:8080/api/v1/auth/test-authentication", {
         headers: {
           Authorization: `Basic ${token}`,
         },
