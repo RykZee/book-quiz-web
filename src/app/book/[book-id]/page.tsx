@@ -2,37 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { getCookie } from "cookies-next";
 import Image from "next/image";
 import { H1 } from "../../components/typography";
+import { Book } from "@/types/book";
+import { saveBook } from "@/lib/bookActions";
+import { RequestStatus } from "@/types/requestStatus";
 
-type Book = {
-  id: string;
-  volumeInfo: {
-    authors: [string];
-    description: string;
-    imageLinks: {
-      large: string;
-      thumbnail: string;
-    };
-    publishedDate: string;
-    title: string;
-    industryIdentifiers: [{ type: string; identifier: string }];
-  };
-};
-
-export default function Book() {
+export default function BookPage() {
   const params = useParams();
   const bookId = params["book-id"] as string;
 
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [requestStatus, setRequestStatus] = useState<{
-    loading: boolean;
-    success: boolean;
-    error: string | null;
-  }>({
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>({
     loading: false,
     success: false,
     error: null,
@@ -67,6 +50,14 @@ export default function Book() {
       fetchBook();
     }
   }, [bookId]);
+
+  const handleSaveBook = async () => {
+    if (book) {
+      await saveBook({ book, setRequestStatus });
+    } else {
+      // TODO: Handle the case when book is not available
+    }
+  };
 
   const generateQuiz = async () => {
     if (!book) return;
@@ -115,59 +106,6 @@ export default function Book() {
     }
   };
 
-  const saveBook = async () => {
-    if (!book) return;
-
-    setRequestStatus({
-      loading: true,
-      success: false,
-      error: null,
-    });
-
-    try {
-      const authToken = getCookie("authToken") as string;
-      const response = await fetch("http://localhost:8080/api/v1/saved-book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authToken,
-        },
-        body: JSON.stringify({
-          id: book.id,
-          title: book.volumeInfo.title,
-          authors: book.volumeInfo.authors ?? ["Unknown"],
-          publishedDate: book.volumeInfo.publishedDate ?? "Unknown",
-          isbn10:
-            book.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === "ISBN_10")
-              ?.identifier ?? "Unknown",
-          isbn13:
-            book.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === "ISBN_13")
-              ?.identifier ?? "Unknown",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Response from backend:", data);
-
-      setRequestStatus({
-        loading: false,
-        success: true,
-        error: null,
-      });
-    } catch (err) {
-      console.error("Error sending request:", err);
-      setRequestStatus({
-        loading: false,
-        success: false,
-        error: "Failed to send request. Please try again later.",
-      });
-    }
-  };
-
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
@@ -204,7 +142,7 @@ export default function Book() {
 
           <div className="mt-4">
             <button
-              onClick={saveBook}
+              onClick={handleSaveBook}
               disabled={requestStatus.loading}
               className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
             >
