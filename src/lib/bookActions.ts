@@ -17,7 +17,7 @@ export const saveBook = async ({ book, setRequestStatus }: SaveBookProps) => {
   });
 
   try {
-    const response = await fetch("http://localhost:8080/api/v1/saved-book", {
+    const response = await fetch("http://localhost:8080/api/v1/book", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
